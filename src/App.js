@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ImageCard from './components/ImageCard'
+import ImageSearch from './components/ImageSearch'
 
 function App() {
   const [images, setImages] = useState([])
@@ -7,7 +8,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [term, setTerm] = useState('')
 
-  // fetch data from pixabay using .env and term from state
+  // fetch data from pixabay using dotenv and term from state
   useEffect(() => {
     fetch(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${term}&image_type=photo&pretty=true`)
     .then(res => res.json())
@@ -20,11 +21,14 @@ function App() {
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-3 gap-4">
+      <ImageSearch />
+
+
+      { isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading ...</h1> : <div className="grid grid-cols-3 gap-4">
         {images.map(image => (
-        <ImageCard key={image.id} image={image} />
+          <ImageCard key={image.id} image={image} />
         ))}
-      </div>
+      </div>}
     </div>
   );
 }
